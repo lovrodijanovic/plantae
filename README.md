@@ -1,2 +1,2 @@
 # plantae
-Assignment for university subject "Mobile application development"
+Assignment for university course "Mobile application development"
