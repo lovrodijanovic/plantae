@@ -24,7 +24,7 @@ class App extends StatelessWidget {
         theme: ThemeData().copyWith(
           useMaterial3: true,
           colorScheme: ColorScheme.fromSeed(
-              seedColor: Color.fromARGB(255, 61, 189, 103)),
+              seedColor: Color.fromARGB(255, 186, 240, 204)),
         ),
         home: StreamBuilder(
           stream: FirebaseAuth.instance.authStateChanges(),
