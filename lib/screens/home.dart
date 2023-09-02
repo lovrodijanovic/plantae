@@ -4,8 +4,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:plantae/models/plant.dart';
 import 'package:plantae/screens/plant_detail.dart';
-import 'package:plantae/widgets/new_plant.dart';
+import 'package:plantae/screens/new_plant.dart';
 import 'package:http/http.dart' as http;
+import 'package:plantae/widgets/timer-provider.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -56,7 +58,9 @@ class _HomeScreenState extends State<HomeScreen> {
           roomLightLevel: plant.value['roomLightLevel'],
           humidityLevel: plant.value['humidityLevel'],
           plantWateringNeeds: plant.value['plantWateringNeeds'],
-          image: plant.value['image']));
+          image: plant.value['image'],
+          wateringInterval: plant.value['wateringInterval'],
+          countdown: plant.value['countdown']));
     }
 
     setState(() {
@@ -121,14 +125,23 @@ class _HomeScreenState extends State<HomeScreen> {
               Navigator.of(context).push(MaterialPageRoute(
                   builder: (ctx) => PlantDetailScreen(plant: _plants[index])));
             },
+            visualDensity: const VisualDensity(vertical: 4),
             title: Text(_plants[index].name),
             leading: CircleAvatar(
                 radius: 26,
                 backgroundImage: NetworkImage(
                   _plants[index].image,
                 )),
-            trailing: Text(
-                "Room light level: ${_plants[index].roomLightLevel}\nHumidity level: ${_plants[index].humidityLevel}\nPlant watering needs: ${_plants[index].plantWateringNeeds}"),
+            trailing: Consumer<TimerProvider>(
+                builder: (context, timerProvider, child) {
+              if (_plants[index].countdown <= 0) {
+                return const Text("This plant needs watering!");
+              } else {
+                return Text(
+                  'Next watering in: \n ${formatCountdownTime(_plants[index].countdown)}',
+                );
+              }
+            }),
           ),
         ),
       );

@@ -1,13 +1,15 @@
-import 'dart:io';
+import 'dart:async';
 
 class Plant {
-  const Plant(
+  Plant(
       {required this.id,
       required this.name,
       required this.roomLightLevel,
       required this.humidityLevel,
       required this.plantWateringNeeds,
-      required this.image});
+      required this.image,
+      required this.wateringInterval,
+      required this.countdown});
 
   final String id;
   final String name;
@@ -15,4 +17,7 @@ class Plant {
   final String humidityLevel;
   final String plantWateringNeeds;
   final String image;
+  int wateringInterval; //in seconds
+  int countdown;
+  Timer? timer;
 }

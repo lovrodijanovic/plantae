@@ -4,6 +4,8 @@ import 'package:plantae/screens/auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:plantae/screens/home.dart';
 import 'package:plantae/screens/splash.dart';
+import 'package:plantae/widgets/timer-provider.dart';
+import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -19,24 +21,27 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        title: 'Plantae',
-        theme: ThemeData().copyWith(
-          useMaterial3: true,
-          colorScheme: ColorScheme.fromSeed(
-              seedColor: const Color.fromARGB(255, 186, 240, 204)),
-        ),
-        home: StreamBuilder(
-          stream: FirebaseAuth.instance.authStateChanges(),
-          builder: (ctx, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const SplashScreen();
-            }
-            if (snapshot.hasData) {
-              return const HomeScreen();
-            }
-            return const AuthScreen();
-          },
-        ));
+    return ChangeNotifierProvider(
+      create: (context) => TimerProvider(),
+      child: MaterialApp(
+          title: 'Plantae',
+          theme: ThemeData().copyWith(
+            useMaterial3: true,
+            colorScheme: ColorScheme.fromSeed(
+                seedColor: const Color.fromARGB(255, 186, 240, 204)),
+          ),
+          home: StreamBuilder(
+            stream: FirebaseAuth.instance.authStateChanges(),
+            builder: (ctx, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const SplashScreen();
+              }
+              if (snapshot.hasData) {
+                return const HomeScreen();
+              }
+              return const AuthScreen();
+            },
+          )),
+    );
   }
 }
