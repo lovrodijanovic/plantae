@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:plantae/models/plant.dart';
 import 'package:plantae/screens/plant_detail.dart';
@@ -21,10 +22,21 @@ class _HomeScreenState extends State<HomeScreen> {
   var _isLoading = true;
   String? _error;
 
+  void setupPushNotifications() async {
+    final fcm = FirebaseMessaging.instance;
+
+    await fcm.requestPermission();
+
+    await fcm.subscribeToTopic("plant");
+  }
+
   @override
   void initState() {
     super.initState();
+
     _loadPlants();
+
+    setupPushNotifications();
   }
 
   void _loadPlants() async {
@@ -55,9 +67,7 @@ class _HomeScreenState extends State<HomeScreen> {
       loadedPlants.add(Plant(
           id: plant.key,
           name: plant.value['name'],
-          roomLightLevel: plant.value['roomLightLevel'],
-          humidityLevel: plant.value['humidityLevel'],
-          plantWateringNeeds: plant.value['plantWateringNeeds'],
+          location: plant.value['location'],
           image: plant.value['image'],
           wateringInterval: plant.value['wateringInterval'],
           countdown: plant.value['countdown']));

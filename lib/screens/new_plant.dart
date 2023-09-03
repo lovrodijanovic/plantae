@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:plantae/models/plant.dart';
 import 'package:http/http.dart' as http;
 import 'package:plantae/widgets/image_input.dart';
-import 'package:plantae/widgets/timer-provider.dart';
 
 int secondsInADay = 86400;
 
@@ -20,14 +19,20 @@ class NewPlant extends StatefulWidget {
 }
 
 class _NewPlantState extends State<NewPlant> {
-  var intensities = ['Low', 'Medium', 'High'];
+  var locations = [
+    "Kitchen",
+    "Bedroom",
+    "Living room",
+    "Bathroom",
+    "Attic",
+    "Hallway",
+    "Terrace"
+  ];
   final _formKey = GlobalKey<FormState>();
   var _enteredName = '';
-  var _roomLightLevel;
-  var _humidityLevel;
-  var _plantWateringNeeds;
+  var _location = '';
   var _wateringInterval = 1;
-  var _countdown = 1;
+  int _countdown = 1;
   var _isSending = false;
   File? _selectedImage;
   String imageUrl = '';
@@ -69,9 +74,7 @@ class _NewPlantState extends State<NewPlant> {
           headers: {'Content-Type': 'application/json'},
           body: json.encode({
             'name': _enteredName,
-            'roomLightLevel': _roomLightLevel,
-            'humidityLevel': _humidityLevel,
-            'plantWateringNeeds': _plantWateringNeeds,
+            'location': _location,
             'image': imageUrl,
             'wateringInterval': _wateringInterval,
             'countdown': _countdown
@@ -86,9 +89,7 @@ class _NewPlantState extends State<NewPlant> {
       Navigator.of(context).pop(Plant(
           id: resData['name'],
           name: _enteredName,
-          roomLightLevel: _roomLightLevel,
-          humidityLevel: _humidityLevel,
-          plantWateringNeeds: _plantWateringNeeds,
+          location: _location,
           image: imageUrl,
           wateringInterval: _wateringInterval,
           countdown: _countdown));
@@ -133,15 +134,16 @@ class _NewPlantState extends State<NewPlant> {
                   return null;
                 },
                 onSaved: (value) {
-                  _wateringInterval = int.parse(value!) * secondsInADay;
+                  _wateringInterval = int.parse(value!);
+                  /** secondsInADay;*/
                   _countdown = _wateringInterval;
                 },
               ),
               DropdownButtonFormField(
                 items: [
-                  for (final intensity in intensities)
+                  for (final location in locations)
                     DropdownMenuItem(
-                        value: intensity,
+                        value: location,
                         child: Row(children: [
                           Container(
                             width: 16,
@@ -150,12 +152,12 @@ class _NewPlantState extends State<NewPlant> {
                           const SizedBox(
                             width: 6,
                           ),
-                          Text(intensity)
+                          Text(location)
                         ]))
                 ],
                 onChanged: (value) {
                   setState(() {
-                    _roomLightLevel = value!;
+                    _location = value!;
                   });
                 },
                 validator: (value) {
@@ -164,68 +166,7 @@ class _NewPlantState extends State<NewPlant> {
                   }
                   return null;
                 },
-                decoration:
-                    const InputDecoration(label: Text('Room light level')),
-              ),
-              DropdownButtonFormField(
-                items: [
-                  for (final intensity in intensities)
-                    DropdownMenuItem(
-                        value: intensity,
-                        child: Row(children: [
-                          Container(
-                            width: 16,
-                            height: 16,
-                          ),
-                          const SizedBox(
-                            width: 6,
-                          ),
-                          Text(intensity)
-                        ]))
-                ],
-                onChanged: (value) {
-                  setState(() {
-                    _humidityLevel = value!;
-                  });
-                },
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Must enter value.';
-                  }
-                  return null;
-                },
-                decoration:
-                    const InputDecoration(label: Text('Room humidity level')),
-              ),
-              DropdownButtonFormField(
-                items: [
-                  for (final intensity in intensities)
-                    DropdownMenuItem(
-                        value: intensity,
-                        child: Row(children: [
-                          Container(
-                            width: 16,
-                            height: 16,
-                          ),
-                          const SizedBox(
-                            width: 6,
-                          ),
-                          Text(intensity)
-                        ]))
-                ],
-                onChanged: (value) {
-                  setState(() {
-                    _plantWateringNeeds = value!;
-                  });
-                },
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Must enter value.';
-                  }
-                  return null;
-                },
-                decoration:
-                    const InputDecoration(label: Text('Plant watering needs')),
+                decoration: const InputDecoration(label: Text('Location')),
               ),
               const SizedBox(
                 height: 12,

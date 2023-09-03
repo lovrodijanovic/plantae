@@ -63,7 +63,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '393637005167',
     projectId: 'plantae-4f74f',
     storageBucket: 'plantae-4f74f.appspot.com',
-    iosClientId: '393637005167-1oi814l8qs80ckh5dl9e3p1sbsf8iarn.apps.googleusercontent.com',
+    iosClientId:
+        '393637005167-1oi814l8qs80ckh5dl9e3p1sbsf8iarn.apps.googleusercontent.com',
     iosBundleId: 'com.example.plantae',
   );
 }

@@ -67,12 +67,7 @@ class PlantDetailScreen extends StatelessWidget {
                 const SizedBox(
                   height: 15,
                 ),
-                Text('Room light level: ${plant.roomLightLevel}',
-                    textScaleFactor: 1.5),
-                Text('Room humidity level: ${plant.humidityLevel}',
-                    textScaleFactor: 1.5),
-                Text('Plant watering needs: ${plant.plantWateringNeeds}',
-                    textScaleFactor: 1.5),
+                Text('Location: ${plant.location}', textScaleFactor: 1.5),
                 const SizedBox(
                   height: 15,
                 ),
