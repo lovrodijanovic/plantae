@@ -31,7 +31,7 @@ class _NewPlantState extends State<NewPlant> {
   final _formKey = GlobalKey<FormState>();
   var _enteredName = '';
   var _location = '';
-  var _wateringInterval = 1;
+  int _wateringInterval = 1;
   int _countdown = 1;
   var _isSending = false;
   File? _selectedImage;
@@ -134,8 +134,7 @@ class _NewPlantState extends State<NewPlant> {
                   return null;
                 },
                 onSaved: (value) {
-                  _wateringInterval = int.parse(value!);
-                  /** secondsInADay;*/
+                  _wateringInterval = int.parse(value!) * secondsInADay;
                   _countdown = _wateringInterval;
                 },
               ),

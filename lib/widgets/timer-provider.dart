@@ -36,9 +36,9 @@ class TimerProvider with ChangeNotifier {
   }
 
   void restartPlantTimer(Plant plant) {
+    updatePlantTimer(plant.id, plant.wateringInterval);
     stopPlantTimer(plant);
     plant.countdown = plant.wateringInterval;
-    updatePlantTimer(plant.id, plant.wateringInterval);
     startPlantTimer(plant);
   }
 }

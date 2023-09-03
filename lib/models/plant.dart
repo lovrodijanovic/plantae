@@ -14,6 +14,6 @@ class Plant {
   final String location;
   final String image;
   int wateringInterval; //in seconds
-  int countdown;
+  int countdown; //in seconds
   Timer? timer;
 }
